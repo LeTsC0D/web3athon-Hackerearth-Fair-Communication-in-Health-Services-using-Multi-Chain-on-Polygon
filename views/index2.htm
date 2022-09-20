@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/web3.min.js"></script>
+    <script type="module" src="js/doctor.js"></script>
+    <title>Doctor</title>
+    <style>
+        body {
+          background-image: url(https://www.binaryfountain.com/wp-content/uploads/2020/01/iStock-1063085984.jpg);
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+        }
+    
+        body,
+        h1 {
+          margin: 0;
+          padding: 0;
+        }
+    
+        .input_wrapper {
+          background-color: rgba(0, 0, 0, 0.8);
+          width: 100vw;
+          height: 100vh;
+          
+          color: #fff;
+          text-align: center;
+        }
+    
+        .input_box {
+          border-bottom: 1px solid #0984e3;
+          width: 80%;
+          display: flex;
+          align-items: center;
+          margin-top: 20px;
+          position: relative;
+        }
+    
+        .input_box input {
+          width: 100%;
+          background-color: transparent;
+          border: none;
+          outline: none;
+          color: #fff;
+          padding: 10px;
+          font-size: 13px;
+        }
+    
+        .input_box input::placeholder {
+          color: #ccc;
+        }
+    
+        .log-in {
+          width: 80%;
+          margin-top: 30px;
+          display: block;
+          background: transparent;
+          border: 1px solid #0984e3;
+          color: #fff;
+          font-size: 16px;
+          padding: 10px 0px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: 0.3s ease-in-out;
+        }
+    
+        .log-in:hover {
+          background-color: rgba(0, 0, 0, 0.3);
+        }
+    
+        #hide1 {
+          display: none;
+        }
+    
+        .eye {
+          position: absolute;
+          right: 1%;
+        }
+      </style>    
+</head>
+<body>
+    <div class="input_wrapper">
+        <input id="id1" value="<%= id %>" hidden></input>
+        <label id="noaccount" style="color:red;text-align:center;font-size:20px">Create an Account</label>
+        <div id="havinganaccount">
+            <label id="username"></label> <br />
+            <label id="userid"></label>
+            <br />
+            Approve the patient Request <br />
+            <select id="requestlist">
+              <option value="-1">Select</option>
+            </select><br />
+            <div id="requestdiv">
+            </div>
+            <br />
+            History<br/>
+            <select id="doctorHistory">
+              <option value="-1">Select</option>
+            </select>
+            <div id="allrequestdiv">
+            </div>            
+        </div>
+    </div>
+</body>
+</html>

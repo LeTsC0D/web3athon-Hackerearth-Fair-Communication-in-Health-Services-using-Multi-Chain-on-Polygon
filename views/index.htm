@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <script src="js/web3.min.js"></script>
+    <script type="module" src="js/index.js"></script> -->
+
+    <style>
+        body {
+          background-image: url(https://www.binaryfountain.com/wp-content/uploads/2020/01/iStock-1063085984.jpg);
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+        }
+  
+        body,
+        h1 {
+          margin: 0;
+          padding: 0;
+        }
+  
+        .input_wrapper {
+          background-color: rgba(0, 0, 0, 0.8);
+          margin: 12% auto;
+          max-width: 500px;
+          padding: 50px;
+          color: #fff;
+          text-align: center;
+        }
+  
+        .input_box {
+          border-bottom: 1px solid #0984e3;
+          width: 80%;
+          display: flex;
+          align-items: center;
+          margin-top: 20px;
+          position: relative;
+        }
+  
+        .input_box input {
+          width: 100%;
+          background-color: transparent;
+          border: none;
+          outline: none;
+          color: #fff;
+          padding: 10px;
+          font-size: 13px;
+        }
+  
+        .input_box input::placeholder {
+          color: #ccc;
+        }
+  
+        .log-in {
+          width: 80%;
+          margin-top: 30px;
+          display: block;
+          background: transparent;
+          border: 1px solid #0984e3;
+          color: #fff;
+          font-size: 16px;
+          padding: 10px 0px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: 0.3s ease-in-out;
+        }
+  
+        .log-in:hover {
+          background-color: rgba(0, 0, 0, 0.3);
+        }
+  
+        #hide1 {
+          display: none;
+        }
+  
+        .eye {
+          position: absolute;
+          right: 1%;
+        }
+      </style>
+    <title>Online Doctors</title>
+</head>
+<body>
+    <form action="/user" method="post"  id="form" >
+    <div class="input_wrapper">
+      <h1>Online Doctors</h1>
+      <div class="input_box">
+        <select id = "myList"  name="entity">  
+            <option> Patient </option>  
+            <option> Doctor </option>  
+            <option> Hospital </option>  
+        </select>  
+      </div>
+      <div class="input_box">
+        <i class="far fa-envelope"></i>
+        <input type="text" placeholder="ID" name="Id" id="Id"/>
+      </div>
+      <div class="input_box">
+        <i class="far fa-envelope"></i>
+        <input type="text" placeholder="Username" name="Username"  id="Username"/>
+      </div>
+      <div class="input_box">
+        <i class="fas fa-key"></i>
+        <input id="myInput" type="password" placeholder="Type Your Password" name="Password" />
+        <span class="eye" onclick="myFunction()">
+          <i id="hide1" class="far fa-eye"></i>
+          <i id="hide2" class="fas fa-eye-slash"></i>
+        </span>
+      </div>
+
+      <button id="submit" type="submit"  class="log-in">Login/Register</button>
+    </div>
+    </form>
+    <script>
+      function myFunction() {
+        const x = document.getElementById("myInput");
+        const y = document.getElementById("hide1");
+        const z = document.getElementById("hide2");
+
+        if (x.type === "password") {
+          x.type = "text";
+          y.style.display = "block";
+          z.style.display = "none";
+        } else {
+          x.type = "password";
+          y.style.display = "none";
+          z.style.display = "block";
+        }
+      }
+    </script>
+    
+  </body>
+</html>
+
+

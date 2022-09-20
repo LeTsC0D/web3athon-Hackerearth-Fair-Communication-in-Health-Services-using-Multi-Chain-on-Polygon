@@ -1,0 +1,94 @@
+pragma solidity >=0.7.0 <0.9.0;
+
+contract HOSPITAL {
+    struct hospital{
+        uint id;
+        string username;
+        string password;
+    }
+    uint count=0;
+    mapping (uint256 => hospital) hospitaldetails;
+
+    struct request{
+        uint requestid;
+        uint hospitalid;
+        uint patientid;
+        string prescribedmedicine;
+        string prescribedmedicinestatus;
+        string prescribedtest;
+        string prescribedtestappointmenttime;
+        string prescribedteststatus;
+    }
+    // uint userid=0;
+    mapping (uint256 => request[]) requestdetails;
+
+    function createhospital(uint id,string memory username,string memory password)public{
+       hospitaldetails[count]=hospital(id,username,password);
+       count++;
+    }
+
+    function gethospitaldetails(uint hospitalid)public view returns(string memory){
+        for(uint i=0;i<count;i++){
+            if(hospitaldetails[i].id==hospitalid){
+                return hospitaldetails[i].username;
+            }
+        }
+        revert("no user exists");    
+    }
+
+    function fetchallhospitalids()public view returns(uint[] memory){
+         uint[] memory arr=new uint[](count);
+        for(uint i=0;i<count;i++){
+            arr[i]=hospitaldetails[i].id;
+        }
+        return arr;
+    }
+
+    function createrequest(uint hospitaid,uint patientid,uint requestid,string memory prescribedmedicine,string memory prescribedmedicinestatus,string memory prescribedtest,string memory prescribedtestappointmenttime,string memory prescribedteststatus)public{
+            requestdetails[hospitaid].push(request(requestid,patientid,hospitaid,prescribedmedicine,prescribedmedicinestatus,prescribedtest,prescribedtestappointmenttime,prescribedteststatus));
+    }
+
+    function getrequestbyhospitalid(uint hospitalid)public view returns(request[] memory){
+        return requestdetails[hospitalid];  
+    }
+    
+    function getallrequestbyhospitalidpatientid(uint hospitalid,uint patientid)public view returns(uint){
+        uint count1=0;
+        for(uint i=0;i<requestdetails[hospitalid].length;i++){
+            if(requestdetails[hospitalid][i].patientid==patientid){
+                count1++;
+            }
+        }        
+        return count1;
+    }
+
+
+    function getRecordbyPatientId(uint hospitalid,uint patientid)public view returns(request[] memory){
+        uint count1=0;
+        for(uint i=0;i<requestdetails[hospitalid].length;i++){
+            if(requestdetails[hospitalid][i].patientid==patientid){
+                count1++;
+            }
+        }
+        request[] memory requestlist=new request[](count1);
+        count1=0;
+         for(uint i=0;i<requestdetails[hospitalid].length;i++){
+            if(requestdetails[hospitalid][i].patientid==patientid){
+                requestlist[count1]=request(requestdetails[hospitalid][i].requestid,requestdetails[hospitalid][i].hospitalid,
+                requestdetails[hospitalid][i].patientid,requestdetails[hospitalid][i].prescribedmedicine,
+                requestdetails[hospitalid][i].prescribedmedicinestatus,
+                requestdetails[hospitalid][i].prescribedtest,requestdetails[hospitalid][i].prescribedtestappointmenttime,
+                requestdetails[hospitalid][i].prescribedteststatus);
+                count1++;
+            }
+        }   
+        return requestlist; 
+    }
+
+    function updaterequest(uint requestid,uint hospitalid,string memory prescribedmedicinestatus,string memory prescribedtestappointmenttime,string memory prescribedteststatus)public{
+        requestdetails[hospitalid][requestid].prescribedmedicinestatus=prescribedmedicinestatus;
+        requestdetails[hospitalid][requestid].prescribedtestappointmenttime=prescribedtestappointmenttime;
+        requestdetails[hospitalid][requestid].prescribedteststatus=prescribedteststatus;
+    }
+
+}
