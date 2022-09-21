@@ -6,7 +6,7 @@ window.onload = async function () {
   var selectedpatient;
   var selectedpatientname;
 
-   window.doc.methods.getdoctordetails(document.getElementById("id1").value).call({ from: window.doc_accounts[0], gas: 100000000 }, function (error, result) {
+   await window.doc.methods.getdoctordetails(document.getElementById("id1").value).call({ from: window.doc_accounts[0], gas: 100000000 }, function (error, result) {
     if (error) {
       console.log(error)
       document.getElementById("noaccount").style.display= 'block'; 
@@ -22,7 +22,7 @@ window.onload = async function () {
     }
   });
 
-   window.doc.methods.getRecord(document.getElementById("id1").value).call({ from: window.doc_accounts[0], gas: 100000000 }, function (error, result) {
+   await window.doc.methods.getRecord(document.getElementById("id1").value).call({ from: window.doc_accounts[0], gas: 100000000 }, function (error, result) {
     if (error) {
       console.log(error)
     }
@@ -44,8 +44,8 @@ window.onload = async function () {
   });
 
   document.getElementById("requestlist").addEventListener('change',(e)=>{
-    selectedpatient= e.options[e.selectedIndex].value;
-    selectedpatientname= e.options[e.selectedIndex].text;
+    selectedpatient= Number(e.target.options[e.target.selectedIndex].value);
+    selectedpatientname= e.target.options[e.target.selectedIndex].text;
 
     window.doc.methods.getRecordbyPatientId(document.getElementById("id1").value,selectedpatient).call({ from: window.doc_accounts[0], gas: 100000000 }, function (error, result) {
       if (error) {
@@ -55,27 +55,27 @@ window.onload = async function () {
       {
           var appointmentdiv=document.getElementById("requestdiv")
           for(var i=0;i<result.length;i++){
-            if(result['confirmationstatus']=='Pending' || result['confirmationstatus']=='Confirmed'){
+            if(result[i]['confirmationstatus']=='Pending' || result[i]['confirmationstatus']=='Confirmed'){
               var newlabel1 = document.createElement("Label");
-              newlabel1.innerHTML = result[i]['name'];
+              newlabel1.innerHTML = result[i]['name']+"&nbsp";
               appointmentdiv.appendChild(newlabel1);
               var newlabel2 = document.createElement("Label");
-              newlabel2.innerHTML = result[i]['diseasename'];
+              newlabel2.innerHTML = result[i]['diseasename']+"&nbsp";
               appointmentdiv.appendChild(newlabel2);
               var newlabel3 = document.createElement("Label");
-              newlabel3.innerHTML = result[i]['prescribedmedicine'];
+              newlabel3.innerHTML = result[i]['prescribedmedicine']+"&nbsp";
               appointmentdiv.appendChild(newlabel3);
               var newlabel4 = document.createElement("Label");
-              newlabel4.innerHTML = result[i]['prescribedtest'];
+              newlabel4.innerHTML = result[i]['prescribedtest']+"&nbsp";
               appointmentdiv.appendChild(newlabel4);
               var newlabel5 = document.createElement("Label");
-              newlabel5.innerHTML = result[i]['appointmenttime'];
+              newlabel5.innerHTML = result[i]['appointmenttime']+"&nbsp";
               appointmentdiv.appendChild(newlabel5);
               var newlabel6 = document.createElement("Label");
-              newlabel6.innerHTML = result[i]['confirmationstatus'];
+              newlabel6.innerHTML = result[i]['confirmationstatus']+"&nbsp";
               appointmentdiv.appendChild(newlabel6);
               var newlabel7 = document.createElement("Label");
-              newlabel7.innerHTML = result[i]['meetinglink'];                                                                                                
+              newlabel7.innerHTML = result[i]['meetinglink']+"&nbsp";                                                                                                
               appointmentdiv.appendChild(newlabel7);
 
               var approve = document.createElement('button');
@@ -91,6 +91,7 @@ window.onload = async function () {
                   }
                 });                  
               };
+              appointmentdiv.appendChild(approve);
 
               var reject = document.createElement('button');
               reject.innerHTML = 'Reject';
@@ -105,6 +106,7 @@ window.onload = async function () {
                   }
                 });                   
               };
+              appointmentdiv.appendChild(reject);
 
               var complete = document.createElement('button');
               complete.innerHTML = 'Complete';
@@ -119,6 +121,12 @@ window.onload = async function () {
                   }
                 });                   
               };
+              appointmentdiv.appendChild(complete);
+
+              var span = document.createElement('span');
+              span.innerHTML = '<br />';
+              appointmentdiv.appendChild(span)
+
 
             }
           }
@@ -148,8 +156,8 @@ window.onload = async function () {
 
 
   document.getElementById("doctorHistory").addEventListener('change',(e)=>{
-    selectedpatient= e.options[e.selectedIndex].value;
-    selectedpatientname= e.options[e.selectedIndex].text;
+    selectedpatient= Number(e.target.options[e.target.selectedIndex].value);
+    selectedpatientname= e.target.options[e.target.selectedIndex].text;
 
     window.doc.methods.getRecordbyPatientId(document.getElementById("id1").value,selectedpatient).call({ from: window.doc_accounts[0], gas: 100000000 }, function (error, result) {
       if (error) {
@@ -157,29 +165,29 @@ window.onload = async function () {
       }
       else
       {
-          var appointmentdiv=document.getElementById("requestdiv")
+          var appointmentdiv=document.getElementById("allrequestdiv")
           for(var i=0;i<result.length;i++){
             // if(result['confirmationstatus']=='Pending' || result['confirmationstatus']=='Confirmed'){
               var newlabel1 = document.createElement("Label");
-              newlabel1.innerHTML = result[i]['name'];
+              newlabel1.innerHTML = result[i]['name']+"&nbsp";
               appointmentdiv.appendChild(newlabel1);
               var newlabel2 = document.createElement("Label");
-              newlabel2.innerHTML = result[i]['diseasename'];
+              newlabel2.innerHTML = result[i]['diseasename']+"&nbsp";
               appointmentdiv.appendChild(newlabel2);
               var newlabel3 = document.createElement("Label");
-              newlabel3.innerHTML = result[i]['prescribedmedicine'];
+              newlabel3.innerHTML = result[i]['prescribedmedicine']+"&nbsp";
               appointmentdiv.appendChild(newlabel3);
               var newlabel4 = document.createElement("Label");
-              newlabel4.innerHTML = result[i]['prescribedtest'];
+              newlabel4.innerHTML = result[i]['prescribedtest']+"&nbsp";
               appointmentdiv.appendChild(newlabel4);
               var newlabel5 = document.createElement("Label");
-              newlabel5.innerHTML = result[i]['appointmenttime'];
+              newlabel5.innerHTML = result[i]['appointmenttime']+"&nbsp";
               appointmentdiv.appendChild(newlabel5);
               var newlabel6 = document.createElement("Label");
-              newlabel6.innerHTML = result[i]['confirmationstatus'];
+              newlabel6.innerHTML = result[i]['confirmationstatus']+"&nbsp";
               appointmentdiv.appendChild(newlabel6);
               var newlabel7 = document.createElement("Label");
-              newlabel7.innerHTML = result[i]['meetinglink'];                                                                                                
+              newlabel7.innerHTML = result[i]['meetinglink']+"<br />";                                                                                                
               appointmentdiv.appendChild(newlabel7);
             // }
           }

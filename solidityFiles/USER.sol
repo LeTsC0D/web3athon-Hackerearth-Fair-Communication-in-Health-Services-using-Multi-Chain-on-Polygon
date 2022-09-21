@@ -21,7 +21,7 @@ contract USER {
                 return (userdetails[i].username);
             }
         }
-        revert("no user exists");     
+        return "none";   
     }
 
     function fetchalluserids()public view returns(uint[] memory){

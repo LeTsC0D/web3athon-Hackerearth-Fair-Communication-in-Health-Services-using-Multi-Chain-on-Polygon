@@ -65,7 +65,7 @@ var  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
     ]
     )
 
- window.user.options.address = '0xD218630f8E3Fc376bf7f9aF1c776256566Fc0B7c'
+ window.user.options.address = '0x352A0e7A39f2A8C4998ABFCB8374248b0670eb1A'
  console.log("after web3 user")
 }
 

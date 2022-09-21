@@ -36,7 +36,7 @@ contract DOCTOR {
                 return doctordetails[i].username;
             }
         }
-        revert("no user exists");    
+        return "none";    
     }
 
     function fetchalldoctorids()public view returns(uint[] memory){
@@ -56,7 +56,11 @@ contract DOCTOR {
     }
 
     function getRecord(uint doctorid)public view returns(recordPatient[] memory){
-        return listofrecordPatient[doctorid];
+         for(uint i=0;i<count;i++){
+            if(doctordetails[i].id==doctorid){
+                return listofrecordPatient[i];
+            }
+        } 
     }
 
     function getRecordbydoctoridpatientid(uint doctorid,uint patientid)public view returns(uint){

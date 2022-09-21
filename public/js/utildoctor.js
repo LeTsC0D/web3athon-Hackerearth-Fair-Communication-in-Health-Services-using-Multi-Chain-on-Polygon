@@ -4,7 +4,7 @@ async function init_web3doc() {
 var  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7546"));
 
     //Load accounts
-    window.doc_accounts = ["0x5B38Da6a701c568545dCfcB03FcB875f56beddC4"];
+    window.doc_accounts = ["0x72113693540df25B1019Aa5Dc7f5bCfA6924Bb73"];
 
     window.doc = new web3.eth.Contract([
       {
@@ -320,7 +320,7 @@ var  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7546"));
         "type": "function"
       }
     ])
- window.doc.options.address = '0xDA0bab807633f07f013f94DD0E6A4F96F8742B53'
+ window.doc.options.address = '0xAd8a13CCA0f05e00aF3439e13E7B6fFbeBeF4B0F'
  console.log("after web3 doctor")
 }
 
