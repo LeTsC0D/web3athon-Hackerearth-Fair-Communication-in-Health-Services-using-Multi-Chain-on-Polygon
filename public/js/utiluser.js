@@ -1,10 +1,10 @@
 async function init_web3user() {
 
 
-var  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
-
+// var  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
+var  web3 = new Web3(window.ethereum)
     //Load accounts
-    window.user_accounts = ["0x0B0484682Dc15e924e90c4D6660ef0c7A6d18696"];
+    window.user_accounts = ["0x3A2369C836CBdb69044Ff4d5a54749a6A320d00b"];
     
     window.user = new web3.eth.Contract([
       {
@@ -65,7 +65,7 @@ var  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
     ]
     )
 
- window.user.options.address = '0x352A0e7A39f2A8C4998ABFCB8374248b0670eb1A'
+ window.user.options.address = '0x7AaFF40fD448d56B4B015e8D359579e7A514e938'
  console.log("after web3 user")
 }
 

@@ -1,10 +1,10 @@
 async function init_web3hos() {
 
 
-var  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7547"));
-
+// var  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7547"));
+var  web3 = new Web3(window.ethereum)
     //Load accounts
-    window.hos_accounts = ["0x1341EBc99188DcAce009f065aD59850336B08Ca0"];
+    window.hos_accounts = ["0x3A2369C836CBdb69044Ff4d5a54749a6A320d00b"];
 
     window.hos = new web3.eth.Contract([
       {
@@ -296,7 +296,7 @@ var  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7547"));
       }
     ]
     )
- window.hos.options.address = '0xb2AD0eb768419159cA4921d05501650f2fA9971F'
+ window.hos.options.address = '0x1532b521a922ee1d9da54b2e05199e92ed2fa8bb'
  console.log("after web3 hospital")
 }
 
