@@ -104,7 +104,11 @@ document.getElementById("doctorlist").addEventListener('change',(e)=>{
       // for(var i=0;i<result.length;i++){
       //   console.log(result)  
         var appointmentdiv=document.getElementById("appointmentdiv")
+         
+        console.log("op",result.length)
+        console.log("hello",result) 
         for(var i=0;i<result.length;i++){
+          console.log("ooo",result[i]['confirmationstatus']=='Confiremed',result[i]['confirmationstatus'])
           if(result[i]['confirmationstatus']=='Pending' || result[i]['confirmationstatus']=='Confirmed'){
             var newlabel1 = document.createElement("Label");
             newlabel1.innerHTML = result[i]['name']+"&nbsp";
@@ -130,7 +134,7 @@ document.getElementById("doctorlist").addEventListener('change',(e)=>{
           }
         }
       // }
-      console.log(result)  
+      
     }
   })  
 })
