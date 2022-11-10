@@ -6,23 +6,35 @@ window.onload = async function () {
   var selectedpatient;
   var selectedpatientname;
 
-   await window.doc.methods.getdoctordetails(document.getElementById("id1").value).call({ from: window.doc_accounts[0], gas: 100000000 }, function (error, result) {
+   await window.doc.methods.getdoctordetails(document.getElementById("id1").value).call({ from: window.doc_accounts[2], gas: 100000000 }, function (error, result) {
     if (error) {
       console.log(error)
       document.getElementById("noaccount").style.display= 'block'; 
-      document.getElementById("havinganaccount").style.display= 'none';
+      document.getElementById("havinganaccount").style.display= 'none';     
     }
     else
     {
       document.getElementById("noaccount").style.display= 'none';
       document.getElementById("havinganaccount").style.display= 'block';
-      document.getElementById("username").textContent=result
+      document.getElementById("username").textContent=result[1]
       document.getElementById("userid").textContent=""+document.getElementById("id1").value
-      console.log("sdnd",result)   
+      console.log("send",result)  
+      if(result[0]=="none"){
+        window.doc.methods.createdoctor(document.getElementById("id1").value,document.getElementById("username1").value,document.getElementById("password1").value).send({ from: window.doc_accounts[2], gas: 100000000 }, function (error, result) {
+          if (error) {
+            console.log("error",error)
+          }
+          else
+          {
+            document.getElementById("username").innerHTML=document.getElementById("username1").value
+            console.log("pass",result)
+          }
+        }) 
+      } 
     }
   });
 
-   await window.doc.methods.getRecord(document.getElementById("id1").value).call({ from: window.doc_accounts[0], gas: 100000000 }, function (error, result) {
+   await window.doc.methods.getRecord(document.getElementById("id1").value).call({ from: window.doc_accounts[2], gas: 100000000 }, function (error, result) {
     if (error) {
       console.log(error)
     }
@@ -38,22 +50,61 @@ window.onload = async function () {
           select.appendChild(option); 
         }        
       }
-
       console.log(result)
     }
   });
 
+  await window.doc.methods.balanceOf(document.getElementById("id1").value).call({ from: window.doc_accounts[2], gas: 100000000 }, function (error, result) {
+    if (error) {
+      console.log("error",error)
+    }
+    else
+    {
+      document.getElementById("token").innerHTML=result
+      console.log("pass",result)
+    }
+  }) 
+
+  document.getElementById("buytoken").addEventListener('click',(e)=>{
+    // console.log("pass",result)
+     console.log(document.getElementById("id1").value)
+     window.doc.methods.transferFrom("0x0B0484682Dc15e924e90c4D6660ef0c7A6d18696",document.getElementById("id1").value,document.getElementById("tokenamount").value).send({ from: window.doc_accounts[2], gas: 100000000 }, function (error, result) {
+      if (error) {
+        console.log("error",error)
+      }
+      else
+      {
+        console.log("pass",result)
+         window.doc.methods.balanceOf(document.getElementById("id1").value).call({ from: window.doc_accounts[2], gas: 100000000 }, function (error, result) {
+          if (error) {
+            console.log("error",error)
+          }
+          else
+          {
+            document.getElementById("token").innerHTML=result
+            document.getElementById("tokenamount").value=0
+            console.log("pass",result)
+          }
+        }) 
+       
+      }
+    }) 
+})
+
   document.getElementById("requestlist").addEventListener('change',(e)=>{
-    selectedpatient= Number(e.target.options[e.target.selectedIndex].value);
+    selectedpatient= e.target.options[e.target.selectedIndex].value;
     selectedpatientname= e.target.options[e.target.selectedIndex].text;
 
-    window.doc.methods.getRecordbyPatientId(document.getElementById("id1").value,selectedpatient).call({ from: window.doc_accounts[0], gas: 100000000 }, function (error, result) {
+    window.doc.methods.getRecordbyPatientId(document.getElementById("id1").value,selectedpatient).call({ from: window.doc_accounts[2], gas: 100000000 }, function (error, result) {
       if (error) {
         console.log(error)
       }
       else
       {
           var appointmentdiv=document.getElementById("requestdiv")
+          while(appointmentdiv.firstChild) {
+            appointmentdiv.removeChild(appointmentdiv.firstChild);
+          }
           for(var i=0;i<result.length;i++){
             if(result[i]['confirmationstatus']=='Pending' || result[i]['confirmationstatus']=='Confirmed'){
               var newlabel1 = document.createElement("Label");
@@ -81,7 +132,7 @@ window.onload = async function () {
               var approve = document.createElement('button');
               approve.innerHTML = 'Approve';
               approve.onclick = function() {
-                window.doc.methods.updaterecordbypatientid(document.getElementById("id1").value,result[i]['patientid'],result[i]['recordid'],"Approved").send({ from: window.doc_accounts[0], gas: 100000000 }, function (error, result) {
+                window.doc.methods.updaterecordbypatientid(document.getElementById("id1").value,result[i]['patientid'],result[i]['recordid'],"Approved").send({ from: window.doc_accounts[2], gas: 100000000 }, function (error, result) {
                   if (error) {
                     console.log(error)
                   }
@@ -96,7 +147,7 @@ window.onload = async function () {
               var reject = document.createElement('button');
               reject.innerHTML = 'Reject';
               reject.onclick = function() {
-                window.doc.methods.updaterecordbypatientid(document.getElementById("id1").value,result[i]['patientid'],result[i]['recordid'],"Reject").send({ from: window.doc_accounts[0], gas: 100000000 }, function (error, result) {
+                window.doc.methods.updaterecordbypatientid(document.getElementById("id1").value,result[i]['patientid'],result[i]['recordid'],"Reject").send({ from: window.doc_accounts[2], gas: 100000000 }, function (error, result) {
                   if (error) {
                     console.log(error) 
                   }
@@ -111,7 +162,7 @@ window.onload = async function () {
               var complete = document.createElement('button');
               complete.innerHTML = 'Complete';
               complete.onclick = function() {
-                window.doc.methods.updaterecordbypatientid(document.getElementById("id1").value,result[i]['patientid'],result[i]['recordid'],"Complete").send({ from: window.doc_accounts[0], gas: 100000000 }, function (error, result) {
+                window.doc.methods.updaterecordbypatientid(document.getElementById("id1").value,result[i]['patientid'],result[i]['recordid'],"Complete").send({ from: window.doc_accounts[2], gas: 100000000 }, function (error, result) {
                   if (error) {
                     console.log(error) 
                   }
@@ -137,7 +188,7 @@ window.onload = async function () {
   })
 
 
-   window.doc.methods.getRecord(document.getElementById("id1").value).call({ from: window.doc_accounts[0], gas: 100000000 }, function (error, result) {
+   window.doc.methods.getRecord(document.getElementById("id1").value).call({ from: window.doc_accounts[2], gas: 100000000 }, function (error, result) {
     if (error) {
       console.log(error)
     }
@@ -156,16 +207,22 @@ window.onload = async function () {
 
 
   document.getElementById("doctorHistory").addEventListener('change',(e)=>{
-    selectedpatient= Number(e.target.options[e.target.selectedIndex].value);
+    selectedpatient= e.target.options[e.target.selectedIndex].value;
     selectedpatientname= e.target.options[e.target.selectedIndex].text;
 
-    window.doc.methods.getRecordbyPatientId(document.getElementById("id1").value,selectedpatient).call({ from: window.doc_accounts[0], gas: 100000000 }, function (error, result) {
+    window.doc.methods.getRecordbyPatientId(document.getElementById("id1").value,selectedpatient).call({ from: window.doc_accounts[2], gas: 100000000 }, function (error, result) {
       if (error) {
         console.log(error)
       }
       else
       {
           var appointmentdiv=document.getElementById("allrequestdiv")
+
+              
+          while(appointmentdiv.firstChild) {
+            appointmentdiv.removeChild(appointmentdiv.firstChild);
+          }
+
           for(var i=0;i<result.length;i++){
             // if(result['confirmationstatus']=='Pending' || result['confirmationstatus']=='Confirmed'){
               var newlabel1 = document.createElement("Label");

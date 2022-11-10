@@ -83,8 +83,18 @@
 </head>
 <body>
     <div class="input_wrapper">
+      <a href="/">Logout</a>
         <input id="id1" value="<%= id %>" hidden></input>
-        <label id="noaccount" style="color:red;text-align:center;font-size:20px">Create an Account</label>
+        <input id="username1" value="<%= username %>" hidden></input>
+        <input id="password1" value="<%= password %>" hidden></input>
+
+        <label id="noaccount" hidden style="color:red;text-align:center;font-size:20px">Create an Account</label>
+        <div >Available Token
+          <div id="token">0</div>
+          <input id="tokenamount"/>
+          <button id="buytoken">BUY</button>
+        </div>
+        
         <div id="havinganaccount">
             DoctorName::<label id="username"></label> <br />
             DoctorId::<label id="userid"></label>

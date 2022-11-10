@@ -5,7 +5,7 @@
     <meta name="viewport"
     content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- <script src="js/web3.min.js"></script> -->
+    <script src="js/web3.min.js"></script>
     <!-- <script type="module" src="js/index.js"></script> -->
 
     <style>
@@ -84,7 +84,8 @@
     <title>Online Doctors</title>
 </head>
 <body>
-    <form action="/user" method="post"  id="form" >
+  <!-- action="/user" -->
+    <form   method="post" action="/user" id="form" >
     <div class="input_wrapper">
       <h1>Online Doctors</h1>
       <div class="input_box">
@@ -94,10 +95,10 @@
             <option> Hospital </option>  
         </select>  
       </div>
-      <div class="input_box">
-        <i class="far fa-envelope"></i>
-        <input type="text" placeholder="ID" name="Id" id="Id"/>
-      </div>
+      <!-- <div class="input_box"> -->
+        <!-- <i class="far fa-envelope"></i> -->
+        <input type="hidden" placeholder="ID" name="Id" id="Id" />
+      <!-- </div> -->
       <div class="input_box">
         <i class="far fa-envelope"></i>
         <input type="text" placeholder="Username" name="Username"  id="Username"/>
@@ -131,7 +132,7 @@
         }
       }
     </script>
-    
+    <script type="module" src="js/index.js"></script>
   </body>
 </html>
 

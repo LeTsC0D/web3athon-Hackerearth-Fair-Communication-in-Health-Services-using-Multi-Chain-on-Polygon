@@ -13,7 +13,7 @@ window.onload = async function () {
   var selectedhospitalname;  
   var username1;
 
-   await window.user.methods.fetchuser(document.getElementById("id1").value).call({ from: window.user_accounts[0], gas: 100000000 }, function (error, result) {
+   await window.user.methods.fetchuser(document.getElementById("id1").value).call({ from: window.user_accounts[1], gas: 100000000 }, function (error, result) {
     if (error) {
       console.log(error)
       document.getElementById("noaccount").style.display= 'block'; 
@@ -26,11 +26,23 @@ window.onload = async function () {
       document.getElementById("havinganaccount").style.display= 'block';
       document.getElementById("username").textContent=result
       document.getElementById("userid").textContent=""+document.getElementById("id1").value
-      console.log("sdnd",result)   
+      console.log("send",result)   
+      if(result=="none"){
+        window.user.methods.createuser(document.getElementById("id1").value,document.getElementById("username1").value,document.getElementById("password1").value).send({ from: window.user_accounts[1], gas: 100000000 }, function (error, result) {
+          if (error) {
+            console.log("error",error)
+          }
+          else
+          {
+            document.getElementById("username").innerHTML=document.getElementById("username1").value
+            console.log("pass",result)
+          }
+        })
+      }
     }
   })
 
-   await window.doc.methods.fetchalldoctorids().call({ from: window.doc_accounts[0], gas: 100000000 }, function (error, result) {
+   await window.doc.methods.fetchalldoctorids().call({ from: window.doc_accounts[2], gas: 100000000 }, function (error, result) {
     if (error) {
       console.log(error)
     }
@@ -40,17 +52,17 @@ window.onload = async function () {
      var select=document.getElementById("doctorlist")
       for(var i=0;i<result.length;i++){
         // console.log(Number(result[i]))
-        var id1=Number(result[i])
-         window.doc.methods.getdoctordetails(Number(result[i])).call({ from: window.doc_accounts[0], gas: 100000000 }, function (error, result1) {
+        // var id1=Number(result[i])
+         window.doc.methods.getdoctordetails(result[i]).call({ from: window.doc_accounts[2], gas: 100000000 }, function (error, result1) {
           if (error) {
             console.log(error)
           }
           else
           {
-            console.log(result1)   
+            console.log("all docors",result1,result1[1])   
             var option = document.createElement("option");
-            option.value = id1;
-            option.text=result1
+            option.value = result1[1];
+            option.text=result1[0]
             select.appendChild(option);            
           }
         })
@@ -60,41 +72,81 @@ window.onload = async function () {
   })  
 
 
-   await window.hos.methods.fetchallhospitalids().call({ from: window.hos_accounts[0], gas: 100000000 }, function (error, result) {
+   await window.hos.methods.fetchallhospitalids().call({ from: window.hos_accounts[3], gas: 100000000 }, function (error, result) {
     if (error) {
       console.log(error)
     }
     else
     {
-      console.log(result)
+      console.log("all",result)
       var select=document.getElementById("hospitallist")
       for(var i=0;i<result.length;i++){
-        var id1=Number(result[i])
-         window.hos.methods.gethospitaldetails(id1).call({ from: window.hos_accounts[0], gas: 100000000 }, function (error, result1) {
+        // var id1=Number(result[i])
+         window.hos.methods.gethospitaldetails(result[i]).call({ from: window.hos_accounts[3], gas: 100000000 }, function (error, result1) {
           if (error) {
             console.log(error)
           }
           else
           {
-            console.log(result1)   
+            console.log("all doctors",result1)   
             var option = document.createElement("option");
-            option.value = id1;
-            option.text = result1;
+            option.value = result1[1];
+            option.text = result1[0];
             select.appendChild(option);            
           }
         })
-      }
-        
+      }  
     }
   })  
+  console.log(document.getElementById("id1").value)
+  console.log(window.user_accounts[1]) 
+
+
+  await window.user.methods.balanceOf(document.getElementById("id1").value).call({ from: window.user_accounts[1], gas: 100000000 }, function (error, result) {
+    if (error) {
+      console.log(document.getElementById("id1").value,window.user_accounts[1])
+      console.log("error",error)
+    }
+    else
+    {
+      document.getElementById("token").innerHTML=result
+      console.log("pass",result)
+    }
+  }) 
+
+  document.getElementById("buytoken").addEventListener('click',(e)=>{
+        // console.log("pass",result)
+         console.log(document.getElementById("id1").value)
+         window.user.methods.transferFrom("0x0B0484682Dc15e924e90c4D6660ef0c7A6d18696",document.getElementById("id1").value,document.getElementById("tokenamount").value).send({ from: window.user_accounts[1], gas: 100000000 }, function (error, result) {
+          if (error) {
+            console.log("error",error)
+          }
+          else
+          {
+            console.log("pass",result)
+             window.user.methods.balanceOf(document.getElementById("id1").value).call({ from: window.user_accounts[1], gas: 100000000 }, function (error, result) {
+              if (error) {
+                console.log("error",error)
+              }
+              else
+              {
+                document.getElementById("token").innerHTML=result
+                document.getElementById("tokenamount").value=0
+                console.log("pass",result)
+              }
+            }) 
+           
+          }
+        }) 
+  })
 
 document.getElementById("doctorlist").addEventListener('change',(e)=>{
   console.log(e.target)
   selecteddoctor= e.target.options[e.target.selectedIndex].value;
   selecteddoctorname= e.target.options[e.target.selectedIndex].text;
-  var selecteddoctorid=Number(selecteddoctor)
+  var selecteddoctorid=selecteddoctor
   console.log(selecteddoctorid,selecteddoctor)
-  window.doc.methods.getRecordbyPatientId(selecteddoctorid,document.getElementById("id1").value).call({ from: window.doc_accounts[0], gas: 100000000 }, function (error, result) {
+  window.doc.methods.getRecordbyPatientId(selecteddoctorid,document.getElementById("id1").value).call({ from: window.doc_accounts[2], gas: 100000000 }, function (error, result) {
     if (error) {
       console.log(error)
     }
@@ -102,9 +154,11 @@ document.getElementById("doctorlist").addEventListener('change',(e)=>{
     {
       // var select=document.getElementById("hospitallist")
       // for(var i=0;i<result.length;i++){
-      //   console.log(result)  
+      // console.log(result)  
         var appointmentdiv=document.getElementById("appointmentdiv")
-         
+        while(appointmentdiv.firstChild) {
+          appointmentdiv.removeChild(appointmentdiv.firstChild);
+        }
         console.log("op",result.length)
         console.log("hello",result) 
         for(var i=0;i<result.length;i++){
@@ -141,23 +195,28 @@ document.getElementById("doctorlist").addEventListener('change',(e)=>{
 
 
 document.getElementById("schedueAppointment").addEventListener('click',(e)=>{
-  selecteddoctor= Number(e.target.options[e.target.selectedIndex].value);
-  selecteddoctorname= e.target.options[e.target.selectedIndex].text;
-  window.user.methods.fetchuser(document.getElementById("id1").value).call({ from: window.user_accounts[0], gas: 100000000 }, function (error, result) {
-    if (error) {
-      console.log(error)
-    }
-    else
-    {
+  // selecteddoctor= e.target.options[e.target.selectedIndex].value;
+  // selecteddoctorname= e.target.options[e.target.selectedIndex].text;
+  selecteddoctor= document.getElementById("doctorlist").value
+  console.log("schedule Appointment",selecteddoctor)  
+  // window.user.methods.fetchuser(document.getElementById("id1").value).call({ from: window.user_accounts[1], gas: 100000000 }, function (error, result) {
+  //   if (error) {
+  //     console.log(error)
+  //   }
+  //   else
+  //   {
  
-      window.doc.methods.getRecordbydoctoridpatientid(selecteddoctor,document.getElementById("id1").value).call({ from: window.doc_accounts[0], gas: 100000000 }, function (error, result) {
+      window.doc.methods.getRecordbydoctoridpatientid(selecteddoctor,document.getElementById("id1").value).call({ from: window.doc_accounts[2], gas: 100000000 }, function (error, result) {
         if (error) {
           console.log(error)
         }
         else
         {
           console.log(result)
-          window.doc.methods.createRecord(selecteddoctor,result,document.getElementById("id1").value,username1,document.getElementById("diseasename").value,"","","","Pending","").send({ from: window.doc_accounts[0], gas: 100000000 }, function (error, result) {
+          console.log(document.getElementById("meetinglink").value)
+          console.log(document.getElementById("doctorlist").value)
+          console.log(document.getElementById("id1").value)
+          window.doc.methods.createRecord(document.getElementById("doctorlist").value,result,document.getElementById("id1").value,document.getElementById("username1").value,document.getElementById("diseasename").value,"","","","Pending",document.getElementById("meetinglink").value).send({ from: window.doc_accounts[2], gas: 100000000 }, function (error, result) {
             if (error) {
               console.log(error)
             }
@@ -168,16 +227,16 @@ document.getElementById("schedueAppointment").addEventListener('click',(e)=>{
           })  
         }
       }) 
-    }
-  })  
+  //   }
+  // })  
 })
 
 // hospital
 document.getElementById("hospitallist").addEventListener('change',(e)=>{
-  selectedhospital= Number(e.target.options[e.target.selectedIndex].value);
+  selectedhospital=e.target.options[e.target.selectedIndex].value;
   selectedhospitalname= e.target.options[e.target.selectedIndex].text;
   
-  window.hos.methods.getRecordbyPatientId(selectedhospital,document.getElementById("id1").value).call({ from: window.hos_accounts[0], gas: 100000000 }, function (error, result) {
+  window.hos.methods.getRecordbyPatientId(selectedhospital,document.getElementById("id1").value).call({ from: window.hos_accounts[3], gas: 100000000 }, function (error, result) {
     if (error) {
       console.log(error)
     }
@@ -187,6 +246,9 @@ document.getElementById("hospitallist").addEventListener('change',(e)=>{
       // for(var i=0;i<result.length;i++){
         console.log(result)  
         var appointmentdiv=document.getElementById("appointmenthospitaldiv")
+        while(appointmentdiv.firstChild) {
+          appointmentdiv.removeChild(appointmentdiv.firstChild);
+        }
         for(var i=0;i<result.length;i++){
           // console.log(result['prescribedmedicinestatus'],result['prescribedmedicinestatus'],result['prescribedmedicinestatus']=='Pending')
           if(result[i]['prescribedmedicinestatus']=='Pending' || result[i]['prescribedteststatus']=='Pending'||result[i]['prescribedmedicinestatus']=='Confirmed' || result[i]['prescribedteststatus']=='Confirmed'){
@@ -215,17 +277,18 @@ document.getElementById("hospitallist").addEventListener('change',(e)=>{
 
 
 document.getElementById("schedueMedicalTest").addEventListener('click',(e)=>{
-  selectedhospital= Number(e.target.options[e.target.selectedIndex].value);
-  selectedhospitalname= e.target.options[e.target.selectedIndex].text;
-
-  window.hos.methods.getallrequestbyhospitalidpatientid(selectedhospital,document.getElementById("id1").value).call({ from: window.hos_accounts[0], gas: 100000000 }, function (error, result) {
+  // selectedhospital= e.target.options[e.target.selectedIndex].value;
+  // selectedhospitalname= e.target.options[e.target.selectedIndex].text;
+  selectedhospital= document.getElementById("hospitallist").value
+  console.log("schedule medical test",selectedhospital)
+  window.hos.methods.getallrequestbyhospitalidpatientid(selectedhospital,document.getElementById("id1").value).call({ from: window.hos_accounts[3], gas: 100000000 }, function (error, result) {
     if (error) {
       console.log(error)
     }
     else
     {
       console.log(result)
-      window.hos.methods.createrequest(selectedhospital,document.getElementById("id1").value,result,"","Pending","","","Pending").send({ from: window.hos_accounts[0], gas: 100000000 }, function (error, result) {
+      window.hos.methods.createrequest(selectedhospital,document.getElementById("id1").value,result,"","Pending","","","Pending").send({ from: window.hos_accounts[3], gas: 100000000 }, function (error, result) {
         if (error) {
           console.log(error)
         }
